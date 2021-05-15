@@ -1,0 +1,42 @@
+name: Update submodules
+
+on:
+  workflow_dispatch:
+  push:
+    paths-ignore:
+    - 'docs/**'
+    - '.github/**'
+  repository_dispatch:
+    types: [update_submodules]
+
+jobs:
+
+  update-submodules:
+
+      name: Updating git submodules
+      runs-on: ubuntu-latest
+
+      steps:
+
+        - name: Checkout code
+          uses: actions/checkout@v2
+          with:
+            persist-credentials: false
+            submodules: recursive
+            fetch-depth: 0
+
+        - name: update submodules
+          run: git submodule foreach 'git fetch && git checkout origin/HEAD && git submodule update --recursive --merge'
+
+        - name: Commit files
+          run: |
+            git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git config --local user.name "github-actions[bot]"
+            git commit -m "submodule auto-update" -a
+        - name: Push changes
+          uses: ad-m/github-push-action@master
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            branch: ${{ github.ref }}
+
+  #

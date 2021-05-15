@@ -1,0 +1,6 @@
+[submodule "JUCE-CmakeWrapper"]
+	path = JUCE-CmakeWrapper
+	url = https://github.com/benthevining/JUCE-CmakeWrapper.git
+[submodule "Source/Shared-code"]
+	path = Source/Shared-code
+	url = https://github.com/benthevining/Shared-code.git

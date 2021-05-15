@@ -1,0 +1,45 @@
+name: Basic repo maintenence & utils
+
+on:
+  workflow_dispatch:
+  push:
+    paths-ignore:
+    - '.github/**'
+    - 'docs/**'
+  schedule:
+  - cron: "00 00 * * 1"
+
+#
+
+jobs:
+
+
+  link-checker:
+
+    name: Checking for dead links
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Markdown links check
+        uses: ruzickap/action-my-markdown-link-checker@v1
+
+  #
+
+  stale:
+
+    name: Mark stale pull requests
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/stale@v3
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        stale-issue-message: 'Stale issue message'
+        stale-pr-message: 'Stale pull request message'
+        stale-issue-label: 'no-issue-activity'
+        stale-pr-label: 'no-pr-activity'
+
+#
